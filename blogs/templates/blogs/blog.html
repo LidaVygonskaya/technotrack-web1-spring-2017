@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends "core/base.html" %}
+{% block title %}<h1><a href="{% url 'blogs:blog_list' %}">Blogs' List</a></h1>{% endblock %}
+
+{% block content %}
+
+    <div>
+        <div><h2>{{ object.title }}</h2></div>
+        <div>{{ object.description }}</div>
+        <div>Owner: {{ object.owner }}</div>
+        <div>Created at: {{ object.created_at }}</div>
+    </div>
+    {% if object.post_set.all %}
+        <div>
+            <h2>Posts</h2>
+            {% for post in object.post_set.all %}
+                <i><a href="{% url 'blogs:postDetail' post_id=post.id blog_id=post.blog.id %}">{{ post.title }}</a></i>
+                <i>{{ post.content }}</i>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+</body>
+</html>

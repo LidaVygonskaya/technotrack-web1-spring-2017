@@ -37,7 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core.apps.CoreConfig',
+    'blogs.apps.BlogConfig',
+    'comments.apps.CommentsConfig'
 ]
+
+AUTH_USER_MODEL = 'core.User'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/home/lida/web_project/media/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -101,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization

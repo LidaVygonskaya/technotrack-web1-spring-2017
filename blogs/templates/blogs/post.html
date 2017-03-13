@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+<body>
+{% extends "core/base.html" %}
+{% block title %}<h1><a href="{% url 'blogs:blogDetail' blog_id=post.blog.id %}">Return to blog</a></h1>{% endblock %}
+
+{% block content %}
+
+    <div>
+        <div><h1>{{ post.title }}</h1></div>
+        <div>{{ post.content }}</div>
+        <div>Author: {{ post.author }}</div>
+        <div>Created at: {{ post.created_at }}</div>
+    </div>
+    <div>
+        <h2>Comments</h2>
+        {% for comment in object.comment_set.all %}
+            <div>
+                <div><i><b>{{ comment.author }}</b></i></div>
+                <div><i>{{ comment.content }}</i></div>
+                <div><a href="{% url 'blogs:comments:commentDetails' comment_id=comment.id post_id=comment.post.id blog_id=post.blog.id %}">Click for Details</a></div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+</body>
+</html>

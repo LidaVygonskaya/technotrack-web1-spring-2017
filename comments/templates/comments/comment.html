@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comment's Details</title>
+</head>
+<body>
+{% extends "core/base.html" %}
+{% block title %}<h1><a href="{% url 'blogs:postDetail' blog_id=comment.post.blog.id post_id=comment.post.id %}">Return to post</a></h1>{% endblock %}
+
+{% block content %}
+
+    <div>
+        <div><h2>Author: {{ comment.author }}</h2></div>
+        <div>{{ comment.content }}</div>
+        <div>Written at: {{ comment.created_at }}</div>
+    </div>
+
+{% endblock %}
+</body>
+</html>

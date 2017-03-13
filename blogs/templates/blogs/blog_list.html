@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends "core/base.html" %}
+
+{% block title %}<h1>Blogs' List</h1>{% endblock %}
+
+{% block content %}
+    {% for blog in object_list %}
+        <div>
+            <div><h2>{{ blog.id }}<a href="{% url "blogs:blogDetail" blog_id=blog.id %}">{{ blog.title }}</a></h2></div>
+            <div>{{ blog.description }}</div>
+        </div>
+    {% endfor %}
+    <br>
+    <br>
+    <div><a href="{% url 'home' %}">Main page</a></div>
+{% endblock %}
+</body>
+</html>
