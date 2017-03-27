@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Posts</title>
-</head>
-<body>
 {% extends "core/base.html" %}
-{% block title %}<h1><a href="{% url 'blogs:blogDetail' blog_id=post.blog.id %}">Return to blog</a></h1>{% endblock %}
+{% block title %}<h1><a href="{% url 'blogs:blogDetail' pk=post.blog.id %}">Return to blog</a></h1>{% endblock %}
 
 {% block content %}
 
@@ -18,16 +11,20 @@
     </div>
     <div>
         <h2>Comments</h2>
-        {% for comment in object.comment_set.all %}
+        {% for comment in post.comment_set.all %}
             <div>
                 <div><i><b>{{ comment.author }}</b></i></div>
                 <div><i>{{ comment.content }}</i></div>
-                <div><a href="{% url 'blogs:comments:commentDetails' comment_id=comment.id post_id=comment.post.id blog_id=post.blog.id %}">Click for Details</a></div>
             </div>
         {% endfor %}
+
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'blogs:postDetail' pk=post.id %}">
+        {% csrf_token %}
+        {{ form.as_ul }}
+    <input type="submit" value="Send">
+    </form>
+    {% endif %}
     </div>
 
 {% endblock %}
-
-</body>
-</html>

@@ -7,7 +7,7 @@ from django.conf import settings
 class Comment(models.Model):
     post = models.ForeignKey('blogs.Post')
     content = models.TextField()
-    date_time = models.DateTimeField()
+    date_time = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)

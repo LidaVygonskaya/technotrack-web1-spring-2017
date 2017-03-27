@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Main page</title>
-</head>
-<body>
+{% extends "core/base.html" %}
+{% block tittle %}<h1>Main page</h1>{% endblock %}
+{% block content %}
     <h1>Main page</h1>
-    <div>Number of blogs:</div>
-    <div>Number of posts:</div>
-    <div>Number of comments:</div>
+    <div>Number of blogs: {{ BlogCount }}</div>
+    <div>Number of posts: {{ PostCount }}</div>
+    <div>Number of comments: {{ CommentCount }}</div>
     <h2><a href="{% url 'blogs:blog_list' %}">Blogs List</a></h2>
-
-</body>
-</html>
+{% endblock %}

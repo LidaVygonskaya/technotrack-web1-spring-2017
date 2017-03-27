@@ -1,24 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 {% extends "core/base.html" %}
-
 {% block title %}<h1>Blogs' List</h1>{% endblock %}
-
 {% block content %}
+    {% if user.is_authenticated %}
+        <div><a href="{% url 'blogs:addblog' %}">Create new blog</a><div>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <div><a href="{% url 'blogs:addpost' %}">Create new post</a><div>
+    {% endif %}
+
+    <form method="get" action="{% url 'blogs:blog_list' %}">
+        {{ sortform }}
+        <input type="submit" value="submit">
+    </form>
     {% for blog in object_list %}
         <div>
-            <div><h2>{{ blog.id }}<a href="{% url "blogs:blogDetail" blog_id=blog.id %}">{{ blog.title }}</a></h2></div>
+            <div><h2>{{ blog.id }}<a href="{% url "blogs:blogDetail" pk=blog.id %}">{{ blog.title }}</a></h2></div>
             <div>{{ blog.description }}</div>
+            {% if blog.author == user %}
+                <div><a href="{% url 'blogs:editblog' pk=blog.id %}">Edit this blog</a><div>
+            {% endif %}
         </div>
     {% endfor %}
     <br>
     <br>
     <div><a href="{% url 'home' %}">Main page</a></div>
 {% endblock %}
-</body>
-</html>

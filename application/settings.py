@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'blogs.apps.BlogConfig',
-    'comments.apps.CommentsConfig'
+    'comments.apps.CommentsConfig',
+    'registration'
 ]
 
 AUTH_USER_MODEL = 'core.User'
@@ -57,6 +58,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'application.urls'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+ACCOUNT_ACTIVATION_DAYS = 2
+REGISTRATION_OPEN = True
 
 TEMPLATES = [
     {
