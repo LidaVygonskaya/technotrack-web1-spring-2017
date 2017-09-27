@@ -1,9 +1,49 @@
+<!DOCTYPE html>
 {% extends "core/base.html" %}
-{% block tittle %}<h1>Main page</h1>{% endblock %}
-{% block content %}
-    <h1>Main page</h1>
-    <div>Number of blogs: {{ BlogCount }}</div>
-    <div>Number of posts: {{ PostCount }}</div>
-    <div>Number of comments: {{ CommentCount }}</div>
-    <h2><a href="{% url 'blogs:blog_list' %}">Blogs List</a></h2>
+{% load static %}
+{% load widget_tweaks %}
+
+<html>
+ <head>
+   <title></title>
+     <link rel="stylesheet" href="{% static "core/bootstrap/dist/css/bootstrap.min.css" %}">
+     <link rel="stylesheet" href="{% static "core/home.css" %}">
+   <meta charset="utf-8">
+
+
+ </head>
+ <body>
+ {% block content %}
+     <div class="container">
+     <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="{% url 'blogs:blog_list' %}">Blogs list</a></li>
+
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Log out</a></li>
+            {% endif %}
+        </ul>
+        <h3 class="text-muted">Blogger</h3>
+     </div>
+      <div class="jumbotron">
+          <header><h1>Blogs Creator</h1></header>
+        <p class="lead">Start to create blogs right now!</p>
+        <p><a class="btn btn-lg btn-success" href="{% url 'register' %}" role="button">Sign up today</a></p>
+          <p class="lead">Have an account? Sign in!</p>
+          <p><a class="btn btn-lg btn-success" href="{% url 'login' %}" role="button">Sign in</a></p>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-6">
+          <h4>Number of blogs: {{ BlogCount }}</h4>
+            <h4>Number of posts: {{ PostCount }}</h4>
+        </div>
+          <div class="col-lg-6">
+            <h4>Number of comments: {{ CommentCount }}</h4>
+              <h4>Number of users: {{ UserCount }}</h4>
+          </div>
+      </div>
+ </div>
 {% endblock %}
+ </body>
+</html>

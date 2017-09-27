@@ -1,0 +1,24 @@
+{% load crispy_forms_filters %}
+{% load widget_tweaks %}
+
+<form method="post" class="ajaxblog" action="{% url 'blogs:editblogdiv' pk=object.id %}">
+    <div class="form-group">
+    {% csrf_token %}
+
+    {{form.title}}
+    </div>
+    <div class="form-group">
+    {{form.description}}
+    </div>
+    <div class="form-group">
+    {{ form.categories|attr:"id:tags" }}
+    </div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" data-dismiss="modal">
+        Close
+    </button>
+    <input type="submit" value="Submit" class="btn btn-success" >
+    </input>
+    </div>
+
+    </form>

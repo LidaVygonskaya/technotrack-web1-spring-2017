@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from configparser import RawConfigParser
+config = RawConfigParser()
+config.read('/home/lida/web_project/conf/project.conf')
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +24,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'pt61rcm4#0+#lffwl2-1!=j8-mo&64h%7&xhr*p_!y%%0r_=r6'
+SECRET_KEY = config.get('global', 'SICRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*'
+]
+ADMINS = [(config.get('admin', 'NAME'), config.get('admin', 'EMAIL'))]
+
 
 
 # Application definition
@@ -40,12 +48,17 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'blogs.apps.BlogConfig',
     'comments.apps.CommentsConfig',
-    'registration'
-]
+    'registration',
+    'widget_tweaks',
+    'crispy_forms',
+    'ckeditor',
+    'ckeditor_uploader'
 
+]
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 AUTH_USER_MODEL = 'core.User'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/lida/web_project/media/'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,9 +102,9 @@ WSGI_APPLICATION = 'application.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "web_project",
-        'USER': "Lida",
-        'PASSWORD': "gbhbgbgbgb45841",
+        'NAME': config.get('database', 'NAME'),
+        'USER': config.get('database', 'USER'),
+        'PASSWORD': config.get('database', 'PASSWORD'),
         'HOST': 'localhost',
     }
 }
@@ -115,6 +128,56 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': 'test''%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+            'require_debug_true': {
+                '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+
+        },
+        'file':{
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/home/lida/web_project/logs/debug.log'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file','console'],
+
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'myproject.custom': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        }
+    }
+}
 
 
 # Internationalization
@@ -131,7 +194,23 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (css, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = config.get('global', 'STATIC')
+MEDIA_ROOT =  config.get('global', 'MEDIA')
+
+#ckeditor
+CKEDITOR_UPLOAD_PATH = 'uploads'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_JQUERY_URL = '/static/js/jquery-2.1.1.min.js'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    },
+
+}

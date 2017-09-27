@@ -16,9 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
-from registration.views import RegistrationView
 
-from core.views import HomePageView
+from core.views import HomePageView, RegisterView
 from django.conf import settings
 
 
@@ -28,7 +27,8 @@ urlpatterns = [
     url(r'^$', HomePageView.as_view(), name='home'),
     url(r'^login/$', login, {'template_name': 'core/login.html'}, name="login"),
     url(r'^logout/$', logout, {'template_name': 'core/logout.html'}, name="logout"),
-    url(r'^accounts/register/$', RegistrationView.as_view(), name='register')
+    url(r'^accounts/register1/$', RegisterView.as_view(), name='register'),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls'), name="meow"),
 ]
 
 if settings.DEBUG is True:

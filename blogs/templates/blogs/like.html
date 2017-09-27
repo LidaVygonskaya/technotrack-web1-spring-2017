@@ -1,0 +1,2 @@
+<span id="likes-{{ post.id }}">Количество лайков поста</span>
+<button class="btn btn-default glyphicon glyphicon-thumbs-up ajaxlike" data-url="{% url "blogs:likecount" pk=post.id %}" data-postid="{{ post.id }}"></button>

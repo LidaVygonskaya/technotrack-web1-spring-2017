@@ -15,6 +15,10 @@ from core.forms import CreateUserForm
 
 from core.models import User
 
+from django.http import HttpResponseRedirect
+
+
+
 
 class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
@@ -22,13 +26,26 @@ class HomePageView(TemplateView):
         context["BlogCount"] = Blog.objects.all().count()
         context["PostCount"] = Post.objects.all().count()
         context["CommentCount"] = Comment.objects.all().count()
+        context["UserCount"] = User.objects.all().count()
         return context
 
     template_name = "core/home.html"
 
+
 class RegisterView(CreateView):
     form_class = CreateUserForm
     template_name = 'registration/registration_form.html'
+
+    def upload_file(request):
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST, request.FILES)
+            if form.is_valid():
+                instance = User(avatar=request.FILES['file'])
+                instance.save()
+                return redirect('home')
+        else:
+            form = CreateUserForm()
+        return render(request, 'registration/registration_form.html', {'form': form})
 
     def get_success_url(self):
         login(self.request, self.object)
@@ -36,3 +53,5 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         return super(RegisterView, self).form_valid(form)
+
+

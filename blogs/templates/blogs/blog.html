@@ -1,25 +1,92 @@
 {% extends "core/base.html" %}
-{% block title %}<h1><a href="{% url 'blogs:blog_list' %}">Blogs' List</a></h1>{% endblock %}
-
+{% load static %}
+{% load widget_tweaks %}
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="{% static 'core/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/home.css' %}">
+    <meta charset="utf-8">
+</head>
+<body>
 {% block content %}
+<div class="container">
+    <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="{% url 'blogs:blog_list' %}">Blog's list</a></li>
 
-    <div>
-
-        <div><h2>{{ object.title }}</h2></div>
-        <div>{{ object.description }}</div>
-        <div>Owner: {{ object.author }}</div>
-        <div>Created at: {{ object.created_at }}</div>
-    </div>
-    {% if object.post_set.all %}
-        <div>
-            <h2>Posts</h2>
-            {% for post in object.post_set.all %}
-                <i><a href="{% url 'blogs:postDetail' pk=post.id %}">{{ post.title }}</a></i>
-                <i>{{ post.content }}</i>
-                {% if post.author == user %}
-                <div><a href="{% url 'blogs:editpost' pk=post.id %}">Edit this post</a><div>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">Log out</a></li>
             {% endif %}
+        </ul>
+        <h3 class="text-muted">Blogger</h3>
+    </div>
+    <div>
+        <div class="jumbotron">
+            <header><h1>Hello! This is {{ blog.author }}!<img class="img-circle" width="236" height="236" src="{{ blog.author.avatar.url }}"></h1></header>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <div><h3>{{ object.title }}</h3></div>
+                    <div>{{ object.description }}</div>
+                    <b>Category: </b>
+                    {% for category in object.categories.all %}
+                    <div>{{ category }}</div>
+                    {% endfor %}
+                    <div><b>Created at: </b>
+                        <time>{{ object.created_at }}</time>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if object.post_set.all %}
+    <div>
+        <h3>Posts</h3>
+        <div class="row">
+            {% for post in object.post_set.all %}
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div>
+                            <nav><a href="{% url 'blogs:postDetail' pk=post.id %}">{{ post.title }}</a></nav>
+                        </div>
+                        <article>{{ post.content|safe }}</article>
+                        {% include 'blogs/like.html' %}
+                        {% if post.author == user %}
+                        <div><a href="{% url 'blogs:editpostdiv' pk=post.id %}" class="btn btn-primary btn-xs buton">Edit this
+                            post</a>
+                        <div class="modal fade " id="basicModal" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <button class="close" type="button" data-dismiss="modal">x</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Edit this post</h4>
+
+                                                <div class="modal-body" data-body-url="{% url 'blogs:editpostdiv' pk=post.id %}">
+
+                                                </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
             {% endfor %}
         </div>
-    {% endif %}
+
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
+<script src="{% static 'blogs/post.js' %}"></script>
+</body>
+
+</html>
+

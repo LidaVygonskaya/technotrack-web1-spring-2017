@@ -1,37 +1,47 @@
+<!DOCTYPE html>
 {% extends "core/base.html" %}
+{% load crispy_forms_filters %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+<html>
+ <head>
+   <title></title>
+
+
+     <link rel="stylesheet" href="{% static "core/bootstrap/dist/css/bootstrap.min.css" %}">
+     <link rel="stylesheet" href="{% static "core/home.css" %}">
+   <meta charset="utf-8">
+
+
+ </head>
+ <body>
+{% block title %}{% endblock %}
 {% block content %}
-    <h1>Sing in or Sign up</h1>
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
 
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
+ <div class="container">
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+     <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="{% url 'home' %}">Home</a></li>
+           </ul>
+        <h3 class="text-muted">Blogger</h3>
+     </div>
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+<div class="jumbotron">
+	<form class="form-signin" method="post" action="{% url 'login' %}" >
+        {% csrf_token %}
 
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="">Lost password?</a></p>
-<p><a href="{% url 'register' %}">Sign up</a></p>
+        <header><h1 class="form-signin-heading text-muted">Sign In</h1></header>
+            {{ form|crispy }}
+		<button class="btn btn-lg btn-primary btn-block" type="submit" value="login">
+			Sign In
+		</button>
+    </form>
+</div>
+</div>
+
 {% endblock %}
+ </body>
+</html>

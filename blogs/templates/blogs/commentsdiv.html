@@ -1,0 +1,14 @@
+{% for comment in post.comment_set.all %}
+            <div>
+            <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div><img class="img-circle" src="{{comment.author.avatar.url}}" width = 40 length = 40><b>   {{ comment.author }}</b></div>
+                <div>{{ comment.content|safe }}</div>
+                            {{comment.text}}
+
+                        </div>
+                    </div>
+            </div>
+            </div>
+        {% endfor %}
